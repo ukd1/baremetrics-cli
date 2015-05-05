@@ -13,11 +13,10 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"time"
 )
 
-const endpoint_url = string("https://dashboard.baremetrics.io/")
-const cli_version = string("0.0.1")
+const endpoint_url = string("https://dashboard.baremetrics.com/")
+const cli_version = string("0.0.2")
 
 func main() {
 	cookie := flag.String("cookie", "", "Your baremetrics cookie")
@@ -27,16 +26,7 @@ func main() {
 		exit_and_print_usage("You must specify your Baremetrics Cookie.")
 	}
 
-	start_date, end_date := get_time()
-	fmt.Println(fetch_http("stats/mrr.json?start_date="+start_date+"&end_date="+end_date, *cookie))
-}
-
-func get_time() (string, string) {
-	base_time := time.Now()
-	start_date := base_time.Add(-30 * 24 * time.Hour).Format("2006-01-02")
-	end_date := base_time.Format("2006-01-02")
-
-	return start_date, end_date
+	fmt.Println(fetch_http("stats/mrr/dashboard.json", *cookie))
 }
 
 func fetch_http(url string, cookie string) string {
